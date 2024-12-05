@@ -2,27 +2,31 @@ import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from './common/common.module';
-import * as process from 'node:process';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({}),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          type: 'postgres',
+          host: configService.get<string>('DB_HOST'),
+          username: configService.get<string>('DB_USERNAME'),
+          password: configService.get<string>('DB_PWD'),
+          database: configService.get<string>('DB_NAME'),
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        };
+      },
+    }),
     UserModule,
     CommonModule,
-    ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DATABASE_URL,
-      username: process.env.DATABASE_USER,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
-    }),
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {
-  constructor() {
-    console.log(JSON.stringify(process.env));
-  }
-}
+export class AppModule {}
