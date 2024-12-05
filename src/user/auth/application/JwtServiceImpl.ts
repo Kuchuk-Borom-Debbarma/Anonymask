@@ -12,6 +12,7 @@ export default class JwtServiceImpl implements JwtService{
 
     return this.jwtService.sign(payload);
   }
+
   verifySignature(token: string) {
     try {
       const decoded = this.jwtService.verify(token);
@@ -23,5 +24,4 @@ export default class JwtServiceImpl implements JwtService{
       };
     }
   }
-
 }

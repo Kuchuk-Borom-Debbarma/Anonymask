@@ -3,6 +3,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from './common/common.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import User from './user/domain/User';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           ssl: {
             rejectUnauthorized: false,
           },
+          entities: [User],
         };
       },
     }),
