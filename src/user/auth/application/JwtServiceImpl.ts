@@ -32,5 +32,4 @@ export default class JwtServiceImpl implements JwtService{
       };
     }
   }
-
 }
