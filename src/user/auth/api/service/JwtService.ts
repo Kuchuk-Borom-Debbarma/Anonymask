@@ -1,4 +1,4 @@
-export default interface JwtService{
+export default abstract class JwtService{
 
 /**
  * Generates a JSON Web Token (JWT) with the provided claims and subject.
@@ -7,7 +7,7 @@ export default interface JwtService{
  * @param subject - The subject (typically a user identifier) for whom the token is being generated.
  * @returns A string representing the signed JWT.
  */
-generateJwt(claims: Map<string, string>, subject: string): string;
+abstract generateJwt(claims: Map<string, string>, subject: string): string;
 
 /**
  * Verifies the signature of a given JWT token to ensure its authenticity and integrity.
@@ -17,7 +17,7 @@ generateJwt(claims: Map<string, string>, subject: string): string;
  *
  * @returns An object containing the decoded payload if the signature is valid, or an error message if invalid.
  */
-verifySignature(token: string): any; //might need to change this any later
+abstract verifySignature(token: string): any; //might need to change this any later
 
 
 }

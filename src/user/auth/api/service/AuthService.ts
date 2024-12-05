@@ -1,4 +1,4 @@
-export default interface AuthService {
+export default abstract class AuthService {
   
 /** 
  * Generates a Google OAuth URL which can be used by a user to log in.
@@ -6,7 +6,7 @@ export default interface AuthService {
  *
  * @returns A string containing the Google OAuth URL.
  */
-generateGoogleOAuthURL(): string;
+abstract generateGoogleOAuthURL(): string;
 
 /**
  * Retrieves user information from the OAuth token received after a successful Google OAuth login.
@@ -17,9 +17,7 @@ generateGoogleOAuthURL(): string;
  *
  * @returns A User DTO (Data Transfer Object) containing the user's details fetched from the OAuth response.
  */
-getUserInfoFromOAuthToken(code: string, state: string): any;
+abstract getUserInfoFromOAuthToken(code: string, state: string): Promise<any>;
 
-
-//TODO:Make the fuckin User DTO
 
 }
