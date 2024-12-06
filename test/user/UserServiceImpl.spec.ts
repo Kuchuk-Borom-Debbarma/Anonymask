@@ -31,7 +31,7 @@ describe('userServiceImpl', () => {
       //Mock save functionality
       jest.spyOn(userRepository, 'save').mockResolvedValue(null);
 
-      await userService.createUser('test user', 'testName', 'random password');
+      await userService.createBaseUser('test user', 'testName', 'random password');
 
       //Asset that userRepo.findOne was called with the parameter test user for userId
       expect(userRepository.findOne).toHaveBeenCalledWith({
@@ -52,7 +52,7 @@ describe('userServiceImpl', () => {
     it('should return null as there is no existing user', async () => {
       //mock null as return value of findOne function
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
-      const user = await userService.getUserById('testID');
+      const user = await userService.getBaseUserById('testID');
       expect(user).toBeNull();
     });
 
@@ -64,7 +64,7 @@ describe('userServiceImpl', () => {
       };
       // @ts-ignore
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(testUser);
-      const result = await userService.getUserById('test');
+      const result = await userService.getBaseUserById('test');
       expect(result).toBeDefined();
       expect(result.userID).toBe('test');
       expect(result.username).toBe('test name');
