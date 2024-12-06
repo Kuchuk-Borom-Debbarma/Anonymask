@@ -171,6 +171,38 @@ export default class UserServiceImpl extends UserService {
     userId: string,
     fieldIds: string[],
   ): Promise<UserFieldDTO | null> {
-    return Promise.resolve(undefined);
+    // Find user field maps for specific field IDs
+    const userFieldMaps = await this.userFieldMap.find({
+      where: {
+        fieldId: In(fieldIds),
+      },
+    });
+
+    // If no field maps found, return null or empty DTO
+    if (userFieldMaps.length === 0) {
+      return null;
+    }
+
+    // Fetch all fields in a single query
+    const fields = await this.userField.find({
+      where: {
+        fieldId: In(userFieldMaps.map((map) => map.fieldId)),
+      },
+    });
+
+    // Create a map of fieldId to fieldName for quick lookup
+    const fieldNameMap = new Map(
+      fields.map((field) => [field.fieldId, field.fieldName]),
+    );
+
+    // Construct DTO with only the requested field IDs
+    return {
+      fields: userFieldMaps.map((userFieldMap) => ({
+        fieldId: userFieldMap.fieldId,
+        fieldName: fieldNameMap.get(userFieldMap.fieldId),
+        fieldValue: userFieldMap.value,
+      })),
+      userId: userId,
+    };
   }
 }
