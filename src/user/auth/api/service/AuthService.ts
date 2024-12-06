@@ -1,4 +1,4 @@
-export default abstract class AuthService {
+export default abstract class GoogleAuthService {
   
 /** 
  * Generates a Google OAuth URL which can be used by a user to log in.
