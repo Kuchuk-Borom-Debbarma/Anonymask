@@ -56,6 +56,38 @@ export default class UserServiceImpl extends UserService {
     return this.toDTO(user);
   }
 
+  async getAllUserFields(userId: string): Promise<UserFieldDTO | null> {
+    // Get all mapped fields of user
+    const userFieldMaps = await this.userFieldMap.find();
+
+    // Extract unique fieldIds
+    const uniqueFieldIds = [
+      ...new Set(userFieldMaps.map((map) => map.fieldId)),
+    ];
+
+    // Fetch all fields in a single query
+    const fields = await this.userField.find({
+      where: {
+        fieldId: In(uniqueFieldIds),
+      },
+    });
+
+    // Create a map of fieldId to fieldName for quick lookup
+    const fieldNameMap = new Map(
+      fields.map((field) => [field.fieldId, field.fieldName]),
+    );
+
+    // Construct DTO
+    return {
+      fields: userFieldMaps.map((userFieldMap) => ({
+        fieldId: userFieldMap.fieldId,
+        fieldName: fieldNameMap.get(userFieldMap.fieldId),
+        fieldValue: userFieldMap.value,
+      })),
+      userId: userId,
+    };
+  }
+
   //TODO return updated user info
   async updateUser(
     userId: string,
@@ -132,38 +164,6 @@ export default class UserServiceImpl extends UserService {
     return {
       username: user.username,
       userID: user.userId,
-    };
-  }
-
-  async getAllUserFields(userId: string): Promise<UserFieldDTO | null> {
-    // Get all mapped fields of user
-    const userFieldMaps = await this.userFieldMap.find();
-
-    // Extract unique fieldIds
-    const uniqueFieldIds = [
-      ...new Set(userFieldMaps.map((map) => map.fieldId)),
-    ];
-
-    // Fetch all fields in a single query
-    const fields = await this.userField.find({
-      where: {
-        fieldId: In(uniqueFieldIds),
-      },
-    });
-
-    // Create a map of fieldId to fieldName for quick lookup
-    const fieldNameMap = new Map(
-      fields.map((field) => [field.fieldId, field.fieldName]),
-    );
-
-    // Construct DTO
-    return {
-      fields: userFieldMaps.map((userFieldMap) => ({
-        fieldId: userFieldMap.fieldId,
-        fieldName: fieldNameMap.get(userFieldMap.fieldId),
-        fieldValue: userFieldMap.value,
-      })),
-      userId: userId,
     };
   }
 
