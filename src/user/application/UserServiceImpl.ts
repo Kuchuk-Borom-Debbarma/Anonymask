@@ -45,7 +45,8 @@ export default class UserServiceImpl extends UserService {
     return this.toDTO(user);
   }
 
-  private toDTO(user: User): UserDTO {
+  private toDTO(user: User): UserDTO | null {
+    if (!user) return null;
     return {
       username: user.username,
       userID: user.userId,

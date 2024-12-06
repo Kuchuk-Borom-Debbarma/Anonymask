@@ -47,4 +47,27 @@ describe('userServiceImpl', () => {
       });
     });
   });
+
+  describe('get user', () => {
+    it('should return null as there is no existing user', async () => {
+      //mock null as return value of findOne function
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
+      const user = await userService.getUserById('testID');
+      expect(user).toBeNull();
+    });
+
+    it('should return a user as there is an existing user', async () => {
+      const testUser: User = {
+        userId: 'test',
+        username: 'test name',
+        passwordHashed: 'dummy',
+      };
+      // @ts-ignore
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(testUser);
+      const result = await userService.getUserById('test');
+      expect(result).toBeDefined();
+      expect(result.userID).toBe('test');
+      expect(result.username).toBe('test name');
+    });
+  });
 });
