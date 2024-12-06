@@ -1,17 +1,17 @@
 import { Injectable } from "@nestjs/common";
-import GoogleAuthService from "../api/service/AuthService";
+import AuthService from "../api/service/AuthService";
 
 
 @Injectable()
-export default class GoogleAuthServiceImpl implements GoogleAuthService {
-  
+export default class GoogleAuthServiceImpl implements AuthService {
+
   constructor(){
     
   }
 
-  
-  
-  
+
+
+
   generateGoogleOAuthURL(): string {
     throw new Error("Method not implemented.");
   }
