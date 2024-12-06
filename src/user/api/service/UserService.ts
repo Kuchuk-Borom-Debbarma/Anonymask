@@ -19,5 +19,5 @@ export default abstract class UserService {
     userId: string,
     name: string,
     password: string,
-  ): Promise<void>;
+  ): Promise<UserDTO>;
 }
