@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import User from '../domain/User';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { UserAlreadyExists } from '../api/exceptions/exceptions';
+import { UserAlreadyExistsException } from '../api/exceptions/exceptions';
 
 @Injectable()
 export default class UserServiceImpl extends UserService {
@@ -16,7 +16,7 @@ export default class UserServiceImpl extends UserService {
     userId: string,
     name: string,
     password: string,
-  ): Promise<void> {
+  ): Promise<UserDTO> {
     console.log(`Create user with id ${userId}, name : ${name}`);
     //Check if user already exists
     const existingUser = await this.userRepo.findOne({
@@ -24,14 +24,15 @@ export default class UserServiceImpl extends UserService {
     });
     //Throw exception if user already exists
     if (existingUser) {
-      throw new UserAlreadyExists(userId);
+      throw new UserAlreadyExistsException(userId);
     }
     //TODO Encrypt password
-    await this.userRepo.save({
+    const savedUser = await this.userRepo.save({
       userId: userId,
       username: name,
       passwordHashed: password,
     });
+    return this.toDTO(savedUser);
   }
 
   async getUserById(userId: string): Promise<UserDTO | null> {
