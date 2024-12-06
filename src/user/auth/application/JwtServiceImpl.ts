@@ -3,7 +3,7 @@ import { JwtService as NestJwtService } from '@nestjs/jwt';
 import JwtService from "../api/service/JwtService";
 
 @Injectable()
-export default class JwtServiceImpl implements JwtService{
+export default class JwtServiceImpl implements JwtService {
   constructor(private readonly jwtService: NestJwtService) {}
 
   generateJwt(claims: Map<string, string>, subject: string): string {

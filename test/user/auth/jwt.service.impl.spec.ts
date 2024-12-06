@@ -104,7 +104,5 @@ describe('JwtServiceImpl', () => {
         details: expect.any(String),
       });
     });
-
   });
-  
 });
