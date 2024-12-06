@@ -1,4 +1,4 @@
-export default interface UserDTO{
-  userID: string,
-  username : string,
+export default interface UserDTO {
+  userID: string;
+  username: string;
 }

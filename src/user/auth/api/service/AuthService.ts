@@ -6,7 +6,7 @@ export default abstract class GoogleAuthService {
  *
  * @returns A string containing the Google OAuth URL.
  */
-abstract generateGoogleOAuthURL(): string;
+abstract generateOAuthLoginUrl(): string;
 
 /**
  * Retrieves user information from the OAuth token received after a successful Google OAuth login.

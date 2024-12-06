@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from './common/common.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import User from './user/domain/User';
+import UserField from './user/domain/UserField';
+import UserFieldMap from './user/domain/UserFieldMap';
 
 @Module({
   imports: [
@@ -21,7 +23,7 @@ import User from './user/domain/User';
           ssl: {
             rejectUnauthorized: false,
           },
-          entities: [User],
+          entities: [User, UserField, UserFieldMap],
         };
       },
     }),

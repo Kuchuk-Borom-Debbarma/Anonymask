@@ -58,7 +58,7 @@ describe('UserServiceImpl Integration', () => {
       const username = 'testName';
       const password = 'random password';
 
-      const createdUser = await userService.createUser(
+      const createdUser = await userService.createBaseUser(
         userId,
         username,
         password,
@@ -79,34 +79,54 @@ describe('UserServiceImpl Integration', () => {
       expect(savedUser.userId).toBe(userId);
       expect(savedUser.username).toBe(username);
     });
+
+    it('should throw UserAlreadyExistsException since there is a user', async () => {
+      const userId = 'test-user-id';
+      const username = 'testName';
+      const password = 'random password';
+
+      // First, create the initial user
+      const createdUser = await userService.createBaseUser(
+        userId,
+        username,
+        password,
+      );
+
+      // verify in the database
+      const userRepository = dataSource.getRepository(User);
+      const savedUser = await userRepository.findOne({
+        where: { userId: userId },
+      });
+
+      expect(savedUser).toBeTruthy();
+      expect(savedUser.userId).toBe(userId);
+      expect(savedUser.username).toBe(username);
+
+      // This should throw exception
+      await expect(
+        userService.createBaseUser(userId, username, password),
+      ).rejects.toThrow(UserAlreadyExistsException);
+    });
   });
 
-  it('should throw UserAlreadyExistsException since there is a user', async () => {
-    const userId = 'test-user-id';
-    const username = 'testName';
-    const password = 'random password';
-
-    // First, create the initial user
-    const createdUser = await userService.createUser(
-      userId,
-      username,
-      password,
-    );
-
-    // verify in the database
-    const userRepository = dataSource.getRepository(User);
-    const savedUser = await userRepository.findOne({
-      where: { userId: userId },
+  describe('get user', () => {
+    it('should return null', async () => {
+      const user = await userService.getBaseUserById('test');
+      expect(user).toBeNull();
     });
 
-    expect(savedUser).toBeTruthy();
-    expect(savedUser.userId).toBe(userId);
-    expect(savedUser.username).toBe(username);
+    it('should return a valid user', async () => {
+      const created = await userService.createBaseUser(
+        'testID',
+        'test name',
+        'test password',
+      );
+      expect(created).toBeDefined();
+      expect(created.username).toBe('test name');
 
-    // This should throw exception
-    // Use await with expect().rejects.toThrow()
-    await expect(
-      userService.createUser(userId, username, password),
-    ).rejects.toThrow(UserAlreadyExistsException);
+      const gotUser = await userService.getBaseUserById('testID');
+      expect(gotUser).toBeDefined();
+      expect(gotUser.userID).toBe('testID');
+    });
   });
 });
