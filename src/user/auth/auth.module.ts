@@ -4,7 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import JwtServiceImpl from './application/JwtServiceImpl';
 import JwtService from './api/service/JwtService';
 import GoogleAuthService from './api/service/AuthService';
-import GoogleAuthServiceImpl from './application/AuthServiceImpl';
+import GoogleAuthServiceImpl from './application/GoogleAuthServiceImpl';
 
 @Module({
   imports: [

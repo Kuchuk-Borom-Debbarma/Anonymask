@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import GoogleAuthServiceImpl from 'src/user/auth/application/AuthServiceImpl';
 import * as readline from 'readline';
+import GoogleAuthServiceImpl from 'src/user/auth/application/GoogleAuthServiceImpl';
 
 describe('GoogleAuthServiceImpl', () => {
   let googleAuthService: GoogleAuthServiceImpl;
