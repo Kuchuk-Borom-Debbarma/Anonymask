@@ -1,12 +1,12 @@
 import * as simpleOAuth2 from 'simple-oauth2';
 import { ConfigService } from '@nestjs/config';
-import GoogleAuthService from '../api/service/AuthService';
+import AuthService from '../api/service/AuthService';
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
 
 @Injectable()
-export default class GoogleAuthServiceImpl implements GoogleAuthService {
+export default class GoogleAuthServiceImpl implements AuthService {
   private oauth2: simpleOAuth2.AuthorizationCode;
 
   constructor(private configService: ConfigService) {

@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import JwtServiceImpl from './application/JwtServiceImpl';
 import JwtService from './api/service/JwtService';
-import GoogleAuthService from './api/service/AuthService';
+import AuthService from './api/service/AuthService';
 import GoogleAuthServiceImpl from './application/GoogleAuthServiceImpl';
 
 @Module({
@@ -27,10 +27,10 @@ import GoogleAuthServiceImpl from './application/GoogleAuthServiceImpl';
       useClass: JwtServiceImpl,
     },
     {
-      provide: GoogleAuthService,
+      provide: AuthService,
       useClass: GoogleAuthServiceImpl,  
     },
   ],
-  exports: [JwtService, GoogleAuthService],
+  exports: [JwtService, AuthService],
 })
 export class AuthModule {}
