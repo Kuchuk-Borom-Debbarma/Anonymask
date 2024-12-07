@@ -6,10 +6,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 @Injectable()
-export default class GoogleAuthServiceImpl implements AuthService {
+export default class GoogleAuthServiceImpl extends AuthService {
   private oauth2: simpleOAuth2.AuthorizationCode;
 
   constructor(private configService: ConfigService) {
+    super();
     const oauth2Client = new simpleOAuth2.AuthorizationCode({
       client: {
         id: this.configService.get<string>('GOOGLE_CLIENT_ID'),
@@ -25,11 +26,6 @@ export default class GoogleAuthServiceImpl implements AuthService {
     this.oauth2 = oauth2Client;
   }
   generateOAuthLoginUrl(): string {
-    throw new Error('Method not implemented.');
-  }
-
-  // Generate the Google OAuth URL
-  generateGoogleOAuthURL(): string {
     const scopes = this.configService.get<string>('GOOGLE_SCOPES').split(',');
     const state = uuidv4();
     const authorizationUri = this.oauth2.authorizeURL({
@@ -39,6 +35,8 @@ export default class GoogleAuthServiceImpl implements AuthService {
     });
     return authorizationUri;
   }
+
+
 
   // Retrieves user information from the OAuth token received after a successful Google OAuth login.
   async getUserInfoFromOAuthToken(code: string): Promise<any> {

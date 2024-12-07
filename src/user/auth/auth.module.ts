@@ -8,9 +8,9 @@ import GoogleAuthServiceImpl from './application/GoogleAuthServiceImpl';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),  
+    ConfigModule.forRoot(),
     JwtModule.registerAsync({
-      global: true,  
+      global: true,
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
@@ -28,7 +28,7 @@ import GoogleAuthServiceImpl from './application/GoogleAuthServiceImpl';
     },
     {
       provide: AuthService,
-      useClass: GoogleAuthServiceImpl,  
+      useClass: GoogleAuthServiceImpl,
     },
   ],
   exports: [JwtService, AuthService],
