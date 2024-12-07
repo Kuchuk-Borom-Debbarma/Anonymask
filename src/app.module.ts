@@ -6,9 +6,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import User from './user/domain/User';
 import UserField from './user/domain/UserField';
 import UserFieldMap from './user/domain/UserFieldMap';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { GraphqlModule } from './graphql/graphql.module';
 
 @Module({
   imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      typePaths: ['./**/*.graphql'],
+    }),
     ConfigModule.forRoot({}),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -29,6 +36,7 @@ import UserFieldMap from './user/domain/UserFieldMap';
     }),
     UserModule,
     CommonModule,
+    GraphqlModule,
   ],
   controllers: [],
   providers: [],

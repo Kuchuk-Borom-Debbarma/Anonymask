@@ -112,8 +112,8 @@ export default class UserServiceImpl extends UserService {
         }),
       );
       const validFields = await this.userField.findBy(criteria);
+      //Once we have the list of valid validFields. We can start attempting to add them
       const userFieldMaps: UserFieldMap[] = [];
-      //Once we have the list of valid validFields. Iterate them and store their values
       validFields.forEach((field) => {
         //Get values
         const fieldVal = fieldInfo.get(field.fieldId);
