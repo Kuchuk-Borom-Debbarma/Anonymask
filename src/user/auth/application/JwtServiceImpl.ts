@@ -2,6 +2,8 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { JwtService as NestJwtService } from '@nestjs/jwt';
 import JwtService from "../api/service/JwtService";
 
+//TODO: Allow nullable claims in my duckin createJWT method
+
 @Injectable()
 export default class JwtServiceImpl implements JwtService {
   constructor(private readonly jwtService: NestJwtService) {}

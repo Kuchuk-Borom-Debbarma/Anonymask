@@ -1,5 +1,5 @@
 type Query {
-    getLoginURL(Provider : LoginProvider) : StringResponse
+  getLoginURL(Provider: LoginProvider): StringResponse
 }
 
 enum LoginProvider {

@@ -12,9 +12,17 @@ export class PublicQueryResolver {
     @Args('Provider')
     provider: OAuthProvider,
   ): ResponseModel<string> {
-    return {
-      data: this.authService.generateOAuthLoginUrl(),
-      msg: `Login URL for ${provider}`,
-    };
+    switch (provider) {
+      case OAuthProvider.GOOGLE:
+        return {
+          data: this.authService.generateOAuthLoginUrl(),
+          msg: `Login URL for ${provider}`,
+        };
+      default:
+        return {
+          data: null,
+          msg: 'Invalid OAuth Provider Type',
+        };
+    }
   }
 }

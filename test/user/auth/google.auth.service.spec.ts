@@ -19,7 +19,7 @@ describe('GoogleAuthServiceImpl', () => {
 
   it('should print the OAuth URL', () => {
     // Generate the Google OAuth URL
-    const oauthUrl = googleAuthService.generateGoogleOAuthURL();
+    const oauthUrl = googleAuthService.generateOAuthLoginUrl();
     
     console.log('OAuth URL:', oauthUrl);
 
@@ -37,7 +37,7 @@ describe('GoogleAuthServiceImpl', () => {
     return new Promise((resolve) => {
       console.log('OAuth Flow Instructions:');
       console.log('1. Open the following URL in your browser:');
-      console.log(googleAuthService.generateGoogleOAuthURL());
+      console.log(googleAuthService.generateOAuthLoginUrl());
       console.log('2. Complete the Google login');
       console.log('3. After redirecting, copy the OAuth code from the URL');
       console.log('4. Paste the code here');

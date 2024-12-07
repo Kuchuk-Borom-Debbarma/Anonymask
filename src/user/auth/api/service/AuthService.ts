@@ -17,7 +17,7 @@ abstract generateOAuthLoginUrl(): string;
  *
  * @returns A User DTO (Data Transfer Object) containing the user's details fetched from the OAuth response.
  */
-abstract getUserInfoFromOAuthToken(code: string, state: string): Promise<any>;
+abstract getUserInfoFromOAuthToken(code: string): Promise<any>;
 
 
 }

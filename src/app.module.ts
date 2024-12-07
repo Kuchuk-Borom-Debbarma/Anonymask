@@ -10,6 +10,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphqlModule } from './graphql/graphql.module';
 import { PublicQueryResolver } from './graphql/resolvers/queries/public/Resolvers';
+import { PublicMutationResolver } from './graphql/resolvers/mutations/public/Resolvers';
 
 @Module({
   imports: [
@@ -40,6 +41,6 @@ import { PublicQueryResolver } from './graphql/resolvers/queries/public/Resolver
     GraphqlModule,
   ],
   controllers: [],
-  providers: [PublicQueryResolver],
+  providers: [PublicQueryResolver,PublicMutationResolver],
 })
 export class AppModule {}
