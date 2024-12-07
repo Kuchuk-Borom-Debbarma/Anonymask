@@ -9,6 +9,7 @@ import UserFieldMap from './user/domain/UserFieldMap';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphqlModule } from './graphql/graphql.module';
+import { TestResolver } from "./graphql/resolvers/Resolvers";
 
 @Module({
   imports: [
@@ -39,6 +40,6 @@ import { GraphqlModule } from './graphql/graphql.module';
     GraphqlModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [TestResolver],
 })
 export class AppModule {}
