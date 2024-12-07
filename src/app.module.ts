@@ -9,7 +9,7 @@ import UserFieldMap from './user/domain/UserFieldMap';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphqlModule } from './graphql/graphql.module';
-import { TestResolver } from "./graphql/resolvers/Resolvers";
+import { PublicQueryResolver } from './graphql/resolvers/queries/public/Resolvers';
 
 @Module({
   imports: [
@@ -40,6 +40,6 @@ import { TestResolver } from "./graphql/resolvers/Resolvers";
     GraphqlModule,
   ],
   controllers: [],
-  providers: [TestResolver],
+  providers: [PublicQueryResolver],
 })
 export class AppModule {}

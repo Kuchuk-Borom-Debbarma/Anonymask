@@ -1,0 +1,7 @@
+type Query {
+    getLoginURL(Provider : LoginProvider) : StringResponse
+}
+
+enum LoginProvider {
+  GOOGLE
+}
