@@ -58,17 +58,17 @@ export default class UserServiceImpl extends UserService {
 
   async getAllUserFields(userId: string): Promise<UserFieldDTO | null> {
     // Get all mapped fields of user
-    const userFieldMaps = await this.userFieldMap.find();
+    const userFieldMaps = await this.userFieldMap.findBy({
+      userId: userId,
+    });
 
-    // Extract unique fieldIds
-    const uniqueFieldIds = [
-      ...new Set(userFieldMaps.map((map) => map.fieldId)),
-    ];
+    //Get all fieldIds
+    const fieldIds: string[] = [];
 
-    // Fetch all fields in a single query
+    userFieldMaps.map((value) => fieldIds.push(value.fieldId));
     const fields = await this.userField.find({
       where: {
-        fieldId: In(uniqueFieldIds),
+        fieldId: In(fieldIds),
       },
     });
 
@@ -88,7 +88,6 @@ export default class UserServiceImpl extends UserService {
     };
   }
 
-  //TODO return updated user info
   async updateUser(
     userId: string,
     baseInfo?: {

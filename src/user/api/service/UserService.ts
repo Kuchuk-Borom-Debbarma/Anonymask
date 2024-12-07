@@ -3,15 +3,16 @@ import UserFieldDTO from '../dto/UserFieldDTO';
 
 export default abstract class UserService {
   /**
-   * Get a user by ID
+   * Get a base user info by ID
    * @param userId userID of the user
    * @return UserDTO or null if user was not found.
    */
   abstract getBaseUserById(userId: string): Promise<UserDTO | null>;
 
   /**
-   * Get all the fields of the user
-   * @param userId
+   * Get all the fields that are being used by the user
+   * @param userId userId to get fields of
+   * @return UserFieldDTO or null if user was not found
    */
   abstract getAllUserFields(userId: string): Promise<null | UserFieldDTO>;
 
