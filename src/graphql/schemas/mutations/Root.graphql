@@ -1,0 +1,5 @@
+type Mutation {
+    public : PublicMutation!
+    private : PrivateMutation!
+    authenticated : AuthMutation!
+}

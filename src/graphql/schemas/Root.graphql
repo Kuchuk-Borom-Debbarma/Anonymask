@@ -2,7 +2,7 @@ interface Response{
   msg : String
 }
 
-type StringResponse implements Response{
+type StringResponse implements Response {
   data : String
   msg : String
 
