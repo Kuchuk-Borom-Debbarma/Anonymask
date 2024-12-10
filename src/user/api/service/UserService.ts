@@ -30,13 +30,11 @@ export default abstract class UserService {
    * Create a user with base info
    * @param userId ID of the user
    * @param name name of the user
-   * @param password password of the user
    * @throws UserAlreadyExists exception if record with same userID exists
    */
   abstract createBaseUser(
     userId: string,
     name: string,
-    password: string,
   ): Promise<UserDTO>;
 
   /**
@@ -49,7 +47,6 @@ export default abstract class UserService {
     userId: string,
     baseInfo?: {
       username?: string;
-      password?: string;
     },
     fieldInfo?: Map<string, string>,
   ): Promise<void>;

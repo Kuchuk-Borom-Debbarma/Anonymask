@@ -4,6 +4,7 @@ import AuthService from '../api/service/AuthService';
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { ConstantsEnvNames } from '../../../util/Constants';
+import { GoogleUserInfoDTO } from '../api/dto/UserInfoDTO';
 
 @Injectable()
 export default class GoogleAuthServiceImpl extends AuthService {
@@ -44,7 +45,7 @@ export default class GoogleAuthServiceImpl extends AuthService {
   }
 
   // Retrieves user information from the OAuth token received after a successful Google OAuth login.
-  async getUserInfoFromOAuthToken(code: string): Promise<any> {
+  async getUserInfoFromOAuthToken(code: string): Promise<GoogleUserInfoDTO> {
     try {
       const tokenParams = {
         code,
@@ -70,7 +71,15 @@ export default class GoogleAuthServiceImpl extends AuthService {
       );
 
       const userInfo = await response.json();
-      return userInfo;
+      return {
+        id: userInfo.email,
+        sub: userInfo.sub,
+        name: userInfo.name,
+        given_name: userInfo.given_name,
+        family_name: userInfo.family_name,
+        picture: userInfo.picture ? userInfo.picture : null,
+        email_verified: Boolean(userInfo.email_verified)
+      };
     } catch (error) {
       throw new Error(`Failed to get user info from Google: ${error.message}`);
     }

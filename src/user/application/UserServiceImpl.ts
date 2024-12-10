@@ -26,7 +26,6 @@ export default class UserServiceImpl extends UserService {
   async createBaseUser(
     userId: string,
     name: string,
-    password: string,
   ): Promise<UserDTO> {
     console.log(`Create user with id ${userId}, name : ${name}`);
     //Check if user already exists
@@ -41,7 +40,6 @@ export default class UserServiceImpl extends UserService {
     const savedUser = await this.userRepo.save({
       userId: userId,
       username: name,
-      passwordHashed: password,
     });
     return this.toDTO(savedUser);
   }
@@ -92,14 +90,12 @@ export default class UserServiceImpl extends UserService {
     userId: string,
     baseInfo?: {
       username?: string;
-      password?: string;
     },
     fieldInfo?: Map<string, string>,
   ): Promise<void> {
     if (baseInfo) {
       const updatedInfo: Partial<User> = {
         username: baseInfo.username,
-        passwordHashed: baseInfo.password,
       };
       await this.userRepo.update(userId, updatedInfo);
     }
