@@ -6,24 +6,33 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import AuthService from '../../../user/auth/api/service/AuthService';
-import { UseGuards } from '@nestjs/common';
-import { UserAuthGuard } from 'src/user-auth-guard/user-auth-guard.guard';
+import { UseGuards } from "@nestjs/common";
+import { UserAuthGuard } from "../../infrastructure/UserAuthGuard";
 
 @ObjectType()
 export class PublicQueries {
   @Field(() => String, { nullable: false })
   getOAuthLoginUrl: string;
+
+  @Field(() => String, { nullable: false })
+  test: string;
 }
 
-@UseGuards(new UserAuthGuard())
 @Resolver(() => PublicQueries)
 export class PublicQueriesResolver {
   constructor(private authService: AuthService) {}
 
+  @UseGuards(UserAuthGuard)
   @ResolveField()
   getOAuthLoginUrl(
-    @Args('source', { type: () => String }) source: string, // Define the 'source' argument
+    @Args('source', { type: () => String }) source: string,
   ): string {
-    return this.authService.generateOAuthLoginUrl(); // Pass the source to the service
+    return this.authService.generateOAuthLoginUrl();
+  }
+
+  @UseGuards(UserAuthGuard)
+  @ResolveField()
+  test(): string {
+    return 'Auth endpoint';
   }
 }

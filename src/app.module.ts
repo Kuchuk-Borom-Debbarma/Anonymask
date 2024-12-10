@@ -13,24 +13,11 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      logger: {
-        info(message?: any) {
-          console.log(`GRAPHQL INFO : ${message}`);
-        },
-        error(message?: any) {
-          console.log(`GRAPHQL ERROR : ${message}`);
-        },
-        warn(message?: any) {
-          console.log(`GRAPHQL WARN : ${message}`);
-        },
-        debug(message?: any) {
-          console.log(`GRAPHQL DEBUG : ${message}`);
-        },
-      },
       driver: ApolloDriver,
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       autoSchemaFile: true,
+
     }),
     ConfigModule.forRoot({}),
     TypeOrmModule.forRootAsync({
