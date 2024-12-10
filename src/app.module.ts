@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CommonModule } from './common/common.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import User from './user/domain/User';
 import UserField from './user/domain/UserField';
@@ -10,6 +9,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphqlModule } from './graphql/graphql.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { ConstantsEnvNames } from "./util/Constants";
 
 @Module({
   imports: [
@@ -38,10 +38,10 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
       },
     }),
     UserModule,
-    CommonModule,
     GraphqlModule,
   ],
   controllers: [],
+  providers :[ConstantsEnvNames]
   //providers: [PublicQueryResolver,PublicMutationResolver],
 })
 export class AppModule {}
