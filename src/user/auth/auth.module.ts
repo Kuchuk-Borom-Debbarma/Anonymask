@@ -29,6 +29,7 @@ import GoogleAuthServiceImpl from './application/GoogleAuthServiceImpl';
     {
       provide: AuthService,
       useClass: GoogleAuthServiceImpl,
+      name: "GoogleAuthService"
     },
   ],
   exports: [JwtService, AuthService],

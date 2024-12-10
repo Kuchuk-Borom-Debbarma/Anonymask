@@ -1,4 +1,5 @@
-export enum OAuthProvider{
+
+export enum OAuthProvider {
     GOOGLE = "GOOGLE"
 }
  

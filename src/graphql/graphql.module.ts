@@ -1,9 +1,26 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from '../user/auth/auth.module';
-import RootQuery from './Schemas/RootQuery';
+import { RootQueryResolver } from './Schemas/RootQueryResolver';
+import { PublicQueriesResolver } from './Schemas/Queries/PublicQueries';
+import { PublicMutationResolver } from './Schemas/Mutation/PublicMutations';
+import { RootMutationResolver } from './Schemas/RootMutationResolver';
+import { registerEnumType } from '@nestjs/graphql';
+import { OAuthProvider } from '../user/auth/api/Provider';
 
 @Module({
-  providers: [RootQuery],
+  providers: [
+    RootQueryResolver,
+    RootMutationResolver,
+    PublicQueriesResolver,
+    PublicMutationResolver,
+  ],
   imports: [AuthModule],
 })
-export class GraphqlModule {}
+export class GraphqlModule {
+  constructor() {
+    registerEnumType(OAuthProvider, {
+      name: 'OAuthProvider', // This is the GraphQL name
+      description: 'Supported OAuth providers', // Optional description
+    });
+  }
+}

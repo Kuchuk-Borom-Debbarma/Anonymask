@@ -9,11 +9,24 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphqlModule } from './graphql/graphql.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { ConstantsEnvNames } from "./util/Constants";
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
+      logger: {
+        info(message?: any) {
+          console.log(`GRAPHQL INFO : ${message}`);
+        },
+        error(message?: any) {
+          console.log(`GRAPHQL ERROR : ${message}`);
+        },
+        warn(message?: any) {
+          console.log(`GRAPHQL WARN : ${message}`);
+        },
+        debug(message?: any) {
+          console.log(`GRAPHQL DEBUG : ${message}`);
+        },
+      },
       driver: ApolloDriver,
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
@@ -41,7 +54,7 @@ import { ConstantsEnvNames } from "./util/Constants";
     GraphqlModule,
   ],
   controllers: [],
-  providers :[]
+  providers: [],
   //providers: [PublicQueryResolver,PublicMutationResolver],
 })
 export class AppModule {}
