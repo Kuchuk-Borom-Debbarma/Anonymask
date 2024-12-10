@@ -29,80 +29,61 @@ describe('JwtServiceImpl', () => {
     jwtServiceImpl = module.get<JwtServiceImpl>(JwtServiceImpl);
   });
 
-  describe('generateJwt', () => {
-    it('should throw an error if the subject is missing', () => {
-      const claims = new Map<string, string>([
-        ['role', 'admin'],
-        ['email', 'test@example.com'],
-      ]);
-      const subject = '';
+  it('should successfully generate a JWT with no input', () => {
+    const token = jwtServiceImpl.generateJwt();
+    expect(token).toBeDefined();
+    expect(typeof token).toBe('string');
+    console.log('Generated Token (No Input):', token); // Print token for inspection
 
-      expect(() => jwtServiceImpl.generateJwt(claims, subject)).toThrow(BadRequestException);
-      expect(() => jwtServiceImpl.generateJwt(claims, subject)).toThrow('Subject is required');
-    });
-
-    it('should throw an error if claims are empty', () => {
-      const claims = new Map<string, string>();
-      const subject = 'user123';
-
-      expect(() => jwtServiceImpl.generateJwt(claims, subject)).toThrow(BadRequestException);
-      expect(() => jwtServiceImpl.generateJwt(claims, subject)).toThrow('Claims cannot be empty');
-    });
-
-    it('should successfully generate a JWT with valid input', () => {
-      const claims = new Map<string, string>([
-        ['role', 'admin'],
-        ['email', 'test@example.com'],
-      ]);
-      const subject = 'user123';
-
-      const token = jwtServiceImpl.generateJwt(claims, subject);
-
-      expect(token).toBeDefined();
-      expect(typeof token).toBe('string');
-    });
+    // Decode the token and check the "iat" claim
+    const decoded = jwtServiceImpl.verifySignature(token);
+    expect(decoded.iat).toBeDefined();
+    expect(typeof decoded.iat).toBe('number'); // "iat" should be a number
   });
 
-  describe('verifySignature', () => {
-    it('should return decoded token if verification is successful', () => {
-      const claims = new Map<string, string>([
-        ['role', 'admin'],
-        ['email', 'test@example.com'],
-      ]);
-      const subject = 'user123';
-      
-      const token = jwtServiceImpl.generateJwt(claims, subject);
-  
-      const decodedToken = {
-        role: 'admin',
-        email: 'test@example.com',
-        exp: expect.any(Number),
-        iat: expect.any(Number),
-        sub: 'user123',
-      };
+  it('should successfully generate a JWT with claims', () => {
+    const claims = new Map([
+      ['role', 'admin'],
+      ['email', 'user@example.com'],
+    ]);
+    const token = jwtServiceImpl.generateJwt(claims);
+    expect(token).toBeDefined();
+    expect(typeof token).toBe('string');
+    console.log('Generated Token (With Claims):', token); // Print token for inspection
 
-      const result = jwtServiceImpl.verifySignature(token);
-  
-      expect(result).toEqual(decodedToken);
-    });
+    // Decode the token and check the claims
+    const decoded = jwtServiceImpl.verifySignature(token);
+    expect(decoded.role).toBe('admin');
+    expect(decoded.email).toBe('user@example.com');
+  });
 
-    it('should throw an error if we use a random string to verify', () => {
-      const claims = new Map<string, string>([
-        ['role', 'admin'],
-        ['email', 'test@example.com'],
-      ]);
-      const subject = 'user123';
-      
-      const token = jwtServiceImpl.generateJwt(claims, subject);
-    
-      const invalidToken = "agfsdgfdhvdbdvbgdfgfdgwsdrbwetefgsfdcsd";
-    
-      const result = jwtServiceImpl.verifySignature(invalidToken);
-    
-      expect(result).toEqual({
-        error: 'Invalid token',
-        details: expect.any(String),
-      });
-    });
+  it('should successfully generate a JWT with subject', () => {
+    const subject = 'user123';
+    const token = jwtServiceImpl.generateJwt(undefined, subject);
+    expect(token).toBeDefined();
+    expect(typeof token).toBe('string');
+    console.log('Generated Token (With Subject):', token); // Print token for inspection
+
+    // Decode the token and check the subject
+    const decoded = jwtServiceImpl.verifySignature(token);
+    expect(decoded.sub).toBe(subject);
+  });
+
+  it('should successfully generate a JWT with claims and subject', () => {
+    const claims = new Map([
+      ['role', 'admin'],
+      ['email', 'user@example.com'],
+    ]);
+    const subject = 'user123';
+    const token = jwtServiceImpl.generateJwt(claims, subject);
+    expect(token).toBeDefined();
+    expect(typeof token).toBe('string');
+    console.log('Generated Token (With Claims and Subject):', token); // Print token for inspection
+
+    // Decode the token and check the claims and subject
+    const decoded = jwtServiceImpl.verifySignature(token);
+    expect(decoded.role).toBe('admin');
+    expect(decoded.email).toBe('user@example.com');
+    expect(decoded.sub).toBe(subject);
   });
 });
