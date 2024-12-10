@@ -1,3 +1,0 @@
-type AuthMutation {
-    foo : String
-}

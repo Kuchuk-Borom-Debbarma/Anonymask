@@ -1,3 +1,0 @@
-type PrivateMutation {
-    foo : String
-}

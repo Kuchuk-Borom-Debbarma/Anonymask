@@ -41,7 +41,7 @@ import { ConstantsEnvNames } from "./util/Constants";
     GraphqlModule,
   ],
   controllers: [],
-  providers :[ConstantsEnvNames]
+  providers :[]
   //providers: [PublicQueryResolver,PublicMutationResolver],
 })
 export class AppModule {}

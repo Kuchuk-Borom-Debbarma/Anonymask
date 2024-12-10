@@ -1,8 +1,5 @@
-import ResponseException from '../../../common/ResponseException';
-import { HttpStatus } from '@nestjs/common';
-
-export class UserAlreadyExistsException extends ResponseException {
+export class UserAlreadyExistsException extends Error {
   constructor(userId: string) {
-    super(HttpStatus.CONFLICT, `User with ID ${userId} already exists`);
+    super(`User with ID ${userId} already exists`);
   }
 }

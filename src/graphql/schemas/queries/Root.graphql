@@ -1,5 +1,0 @@
-type Query {
-    public : PublicQuery!
-    private : PrivateQuery
-    authenticated : AuthQuery!
-}

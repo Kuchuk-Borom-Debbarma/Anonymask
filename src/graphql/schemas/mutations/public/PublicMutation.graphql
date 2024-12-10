@@ -1,3 +1,0 @@
-type PublicMutation {
-  exchangeOAuthToken(code:String!): StringResponse!
-}

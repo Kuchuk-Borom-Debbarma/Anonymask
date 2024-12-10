@@ -7,10 +7,7 @@ import { ConstantsEnvNames } from '../../../util/Constants';
 
 @Injectable()
 export default class JwtServiceImpl implements JwtService {
-  constructor(
-    private readonly jwtService: NestJwtService,
-    private readonly constEnv: ConstantsEnvNames,
-  ) {}
+  constructor(private readonly jwtService: NestJwtService) {}
 
   generateJwt(claims: Map<string, string>, subject: string): string {
     if (!subject || subject.trim() === '') {
@@ -25,7 +22,7 @@ export default class JwtServiceImpl implements JwtService {
     const payload = { ...claimsObject, sub: subject };
 
     return this.jwtService.sign(payload, {
-      secret: this.constEnv.JWT_SECRET,
+      secret: ConstantsEnvNames.JWT_SECRET,
       algorithm: 'HS256',
     });
   }
@@ -34,7 +31,7 @@ export default class JwtServiceImpl implements JwtService {
     try {
       // @ts-ignore
       const decoded = this.jwtService.verify(token, {
-        secret: this.constEnv.JWT_SECRET,
+        secret: ConstantsEnvNames.JWT_SECRET,
         algorithms: ['HS256'],
       });
       return decoded;

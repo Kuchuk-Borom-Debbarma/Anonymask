@@ -9,15 +9,14 @@ import { ConstantsEnvNames } from '../../../util/Constants';
 export default class GoogleAuthServiceImpl extends AuthService {
   private oauth2: simpleOAuth2.AuthorizationCode;
 
-  constructor(
-    private configService: ConfigService,
-    private constEnv: ConstantsEnvNames,
-  ) {
+  constructor(private configService: ConfigService) {
     super();
     const oauth2Client = new simpleOAuth2.AuthorizationCode({
       client: {
-        id: this.configService.get<string>(constEnv.GOOGLE_CLIENT_ID),
-        secret: this.configService.get<string>(constEnv.GOOGLE_CLIENT_SECRET),
+        id: this.configService.get<string>(ConstantsEnvNames.GOOGLE_CLIENT_ID),
+        secret: this.configService.get<string>(
+          ConstantsEnvNames.GOOGLE_CLIENT_SECRET,
+        ),
       },
       auth: {
         tokenHost: 'https://accounts.google.com',
@@ -31,12 +30,12 @@ export default class GoogleAuthServiceImpl extends AuthService {
 
   generateOAuthLoginUrl(): string {
     const scopes = this.configService
-      .get<string>(this.constEnv.GOOGLE_SCOPES)
+      .get<string>(ConstantsEnvNames.GOOGLE_SCOPES)
       .split(',');
     const state = uuidv4();
     const authorizationUri = this.oauth2.authorizeURL({
       redirect_uri: this.configService.get<string>(
-        this.constEnv.GOOGLE_REDIRECT_URI,
+        ConstantsEnvNames.GOOGLE_REDIRECT_URI,
       ),
       scope: scopes,
       state: state,
@@ -50,7 +49,7 @@ export default class GoogleAuthServiceImpl extends AuthService {
       const tokenParams = {
         code,
         redirect_uri: this.configService.get<string>(
-          this.constEnv.GOOGLE_REDIRECT_URI,
+          ConstantsEnvNames.GOOGLE_REDIRECT_URI,
         ),
       };
 
