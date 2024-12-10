@@ -6,6 +6,8 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import AuthService from '../../../user/auth/api/service/AuthService';
+import { UseGuards } from '@nestjs/common';
+import { UserAuthGuard } from 'src/user-auth-guard/user-auth-guard.guard';
 
 @ObjectType()
 export class PublicQueries {
@@ -13,6 +15,7 @@ export class PublicQueries {
   getOAuthLoginUrl: string;
 }
 
+@UseGuards(new UserAuthGuard())
 @Resolver(() => PublicQueries)
 export class PublicQueriesResolver {
   constructor(private authService: AuthService) {}
