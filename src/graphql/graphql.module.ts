@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-import RootQueryResolver from './Queries/Root';
+import { AuthModule } from '../user/auth/auth.module';
+import RootQuery from './Schemas/RootQuery';
 
 @Module({
-  providers: [RootQueryResolver],
+  providers: [RootQuery],
+  imports: [AuthModule],
 })
 export class GraphqlModule {}
