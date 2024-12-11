@@ -1,11 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
-import JwtService from '../../user/auth/api/service/JwtService';
-import AuthService from '../../user/auth/api/service/AuthService';
-import UserService from '../../user/api/service/UserService';
-import { OAuthProvider } from '../../user/auth/api/Provider';
-import { UserInfoDTO } from '../../user/auth/api/dto/UserInfoDTO';
-import UserDTO from '../../user/api/dto/UserDTO';
-import { FastifyRequest } from 'fastify';
+import { Injectable } from "@nestjs/common";
+import JwtService from "../../user/auth/api/service/JwtService";
+import AuthService from "../../user/auth/api/service/AuthService";
+import UserService from "../../user/api/service/UserService";
+import { OAuthProvider } from "../../user/auth/api/Provider";
+import { UserInfoDTO } from "../../user/auth/api/dto/UserInfoDTO";
 
 @Injectable()
 export class AuthOrchestrator {
