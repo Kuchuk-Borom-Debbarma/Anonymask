@@ -20,13 +20,11 @@ export default abstract class UserService {
    * Update user info
    * @param userId id of the user
    * @param baseInfo basic information
-   * @param fieldInfo field mapped information
    */
   abstract updateUser(
     userId: string,
     baseInfo?: {
       username?: string;
-    },
-    fieldInfo?: Map<string, string>,
+    }
   ): Promise<void>;
 }
