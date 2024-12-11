@@ -9,6 +9,7 @@ import { OAuthProvider } from '../user/auth/api/Provider';
 import { AuthQueriesResolver } from './Schemas/Queries/AuthQueries';
 import { AuthOrchestrator } from './application/AuthOrchestratorService';
 import { UserModule } from '../user/user.module';
+import { AuthMutationsResolver } from './Schemas/Mutation/AuthMutations';
 
 @Module({
   providers: [
@@ -18,14 +19,15 @@ import { UserModule } from '../user/user.module';
     PublicMutationResolver,
     AuthQueriesResolver,
     AuthOrchestrator,
+    AuthMutationsResolver,
   ],
   imports: [AuthModule, UserModule],
 })
 export class GraphqlModule {
   constructor() {
     registerEnumType(OAuthProvider, {
-      name: 'OAuthProvider', // This is the GraphQL name
-      description: 'Supported OAuth providers', // Optional description
+      name: 'OAuthProvider',
+      description: 'Supported OAuth providers',
     });
   }
 }
