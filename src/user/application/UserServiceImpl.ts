@@ -43,14 +43,17 @@ export default class UserServiceImpl extends UserService {
 
   async updateUser(
     userId: string,
-    baseInfo: {
-      username?: string;
-    },
+    baseInfo: Partial<Omit<User, 'id'>>,
   ): Promise<void> {
-    const updatedInfo: Partial<User> = {
-      username: baseInfo.username,
-    };
-    await this.userRepo.update(userId, updatedInfo);
+    const updatedInfo: Partial<User> = Object.fromEntries(
+      Object.entries(baseInfo).filter(
+        ([_, value]) => value !== undefined && value !== null,
+      ),
+    );
+
+    if (Object.keys(updatedInfo).length > 0) {
+      await this.userRepo.update(userId, updatedInfo);
+    }
   }
 
   private toDTO(user: User): UserDTO | null {

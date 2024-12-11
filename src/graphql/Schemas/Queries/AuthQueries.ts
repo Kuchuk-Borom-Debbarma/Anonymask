@@ -5,8 +5,6 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
-import { UserAuthGuard } from '../../infrastructure/UserAuthGuard';
 import UserDTO from '../../../user/api/dto/UserDTO';
 import { FastifyRequest } from 'fastify';
 
@@ -24,7 +22,6 @@ export class AuthQueries {
   userInfo: UserInfoResponse;
 }
 
-@UseGuards(UserAuthGuard)
 @Resolver(() => AuthQueries)
 export class AuthQueriesResolver {
   @ResolveField()
