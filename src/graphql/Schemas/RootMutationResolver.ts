@@ -10,6 +10,7 @@ export class RootMutationResolver {
   publicEndpoint(): PublicMutations {
     return new PublicMutations();
   }
+
   @UseGuards(UserAuthGuard)
   @Mutation(() => AuthMutations, { name: 'auth', nullable: false })
   authEndpoint(): AuthMutations {

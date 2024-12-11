@@ -9,7 +9,7 @@ import {
 } from '@nestjs/graphql';
 import { Logger } from '@nestjs/common';
 import { AuthOrchestrator } from '../../application/AuthOrchestratorService';
-import { ResponseModel } from '../Types/Root.types';
+import { IResponseModel, StringResponse } from '../Types/Root.types';
 
 @ArgsType()
 export class updateUserInput {
@@ -19,8 +19,8 @@ export class updateUserInput {
 
 @ObjectType()
 export class AuthMutations {
-  @Field(() => ResponseModel<null>)
-  updateUser: ResponseModel<null>;
+  @Field(() => StringResponse)
+  updateUser: IResponseModel<String>;
 }
 
 @Resolver(() => AuthMutations)
@@ -33,7 +33,7 @@ export class AuthMutationsResolver {
   async updateUser(
     @Context() context: any,
     @Args() info: updateUserInput,
-  ): Promise<ResponseModel<null>> {
+  ): Promise<IResponseModel<String>> {
     this.log.debug(`Updating user info ${JSON.stringify(info)}`);
     const user = this.orchestrator.getCurrentUser(context);
     await this.orchestrator.updateUserInfo(user.userID, {
@@ -42,7 +42,6 @@ export class AuthMutationsResolver {
     return {
       success: true,
       message: '',
-      data: null,
     };
   }
 }

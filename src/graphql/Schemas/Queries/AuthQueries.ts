@@ -7,6 +7,7 @@ import {
 } from '@nestjs/graphql';
 import UserDTO from '../../../user/api/dto/UserDTO';
 import { FastifyRequest } from 'fastify';
+import { IResponseModel, ResponseModel } from '../Types/Root.types';
 
 @ObjectType()
 export class UserInfoResponse {
@@ -16,16 +17,18 @@ export class UserInfoResponse {
   name: string;
 }
 
+const userInfoResponse = ResponseModel(UserInfoResponse);
+
 @ObjectType()
 export class AuthQueries {
-  @Field(() => UserInfoResponse, { nullable: false })
-  userInfo: UserInfoResponse;
+  @Field(() => userInfoResponse, { nullable: false })
+  userInfo: IResponseModel<UserInfoResponse>;
 }
 
 @Resolver(() => AuthQueries)
 export class AuthQueriesResolver {
   @ResolveField()
-  userInfo(@Context() context: any): UserInfoResponse {
+  userInfo(@Context() context: any): IResponseModel<UserInfoResponse> {
     // Correctly access the request from GraphQL context
     const request: FastifyRequest = context.req;
 
@@ -35,8 +38,11 @@ export class AuthQueriesResolver {
     }
 
     return {
-      name: user.username,
-      id: user.userID,
+      success: true,
+      data: {
+        name: user.username,
+        id: user.userID,
+      },
     };
   }
 }
