@@ -9,6 +9,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphqlModule } from './graphql/graphql.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { ConstEnvNames } from './util/Constants';
 
 @Module({
   imports: [
@@ -17,7 +18,6 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       autoSchemaFile: true,
-
     }),
     ConfigModule.forRoot({}),
     TypeOrmModule.forRootAsync({
@@ -26,12 +26,12 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
       useFactory: async (configService: ConfigService) => {
         return {
           type: 'postgres',
-          host: configService.get<string>('DB_HOST'),
-          username: configService.get<string>('DB_USERNAME'),
-          password: configService.get<string>('DB_PWD'),
-          database: configService.get<string>('DB_NAME'),
+          host: configService.get<string>(ConstEnvNames.DB_HOST),
+          username: configService.get<string>(ConstEnvNames.DB_USERNAME),
+          password: configService.get<string>(ConstEnvNames.DB_PWD),
+          database: configService.get<string>(ConstEnvNames.DB_NAME),
           ssl: {
-            rejectUnauthorized: false,
+            rejectUnauthorized: true,
           },
           entities: [User, UserField, UserFieldMap],
         };
@@ -42,6 +42,5 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
   ],
   controllers: [],
   providers: [],
-  //providers: [PublicQueryResolver,PublicMutationResolver],
 })
 export class AppModule {}

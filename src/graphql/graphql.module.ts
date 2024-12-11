@@ -6,7 +6,9 @@ import { PublicMutationResolver } from './Schemas/Mutation/PublicMutations';
 import { RootMutationResolver } from './Schemas/RootMutationResolver';
 import { registerEnumType } from '@nestjs/graphql';
 import { OAuthProvider } from '../user/auth/api/Provider';
-import { AuthQueriesQueriesResolver } from './Schemas/Queries/AuthQueries';
+import { AuthQueriesResolver } from './Schemas/Queries/AuthQueries';
+import { AuthOrchestrator } from './application/AuthOrchestratorService';
+import { UserModule } from '../user/user.module';
 
 @Module({
   providers: [
@@ -14,9 +16,10 @@ import { AuthQueriesQueriesResolver } from './Schemas/Queries/AuthQueries';
     RootMutationResolver,
     PublicQueriesResolver,
     PublicMutationResolver,
-    AuthQueriesQueriesResolver,
+    AuthQueriesResolver,
+    AuthOrchestrator,
   ],
-  imports: [AuthModule],
+  imports: [AuthModule, UserModule],
 })
 export class GraphqlModule {
   constructor() {

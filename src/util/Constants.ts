@@ -1,4 +1,4 @@
-export class ConstantsEnvNames {
+export class ConstEnvNames {
   static readonly DB_HOST = 'DB_HOST';
   static readonly DB_USERNAME = 'DB_USERNAME';
   static readonly DB_PWD = 'DB_PWD';
@@ -10,8 +10,8 @@ export class ConstantsEnvNames {
   static readonly GOOGLE_REDIRECT_URI = 'GOOGLE_REDIRECT_URI';
   static readonly JWT_SECRET = 'JWT_SECRET';
   static readonly JWT_ALGO = 'HS256';
-  static readonly JWT_EXPIRES_IN = "JWT_EXPIRES_IN";
+  static readonly JWT_EXPIRES_IN = 'JWT_EXPIRES_IN';
 
   // Private constructor to prevent instantiation
-  private constructor() { }
+  private constructor() {}
 }

@@ -6,8 +6,9 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import AuthService from '../../../user/auth/api/service/AuthService';
-import { UseGuards } from "@nestjs/common";
-import { UserAuthGuard } from "../../infrastructure/UserAuthGuard";
+import { UseGuards } from '@nestjs/common';
+import { UserAuthGuard } from '../../infrastructure/UserAuthGuard';
+import { OAuthProvider } from '../../../user/auth/api/Provider';
 
 @ObjectType()
 export class PublicQueries {
@@ -25,7 +26,7 @@ export class PublicQueriesResolver {
   @UseGuards(UserAuthGuard)
   @ResolveField()
   getOAuthLoginUrl(
-    @Args('source', { type: () => String }) source: string,
+    @Args('source', { type: () => OAuthProvider }) source: OAuthProvider,
   ): string {
     return this.authService.generateOAuthLoginUrl();
   }
