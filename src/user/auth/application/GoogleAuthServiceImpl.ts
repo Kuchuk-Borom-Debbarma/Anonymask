@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import AuthService from '../api/service/AuthService';
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
-import { ConstantsEnvNames } from '../../../util/Constants';
+import { ConstEnvNames } from '../../../util/Constants';
 import { GoogleUserInfoDTO } from '../api/dto/UserInfoDTO';
 
 @Injectable()
@@ -14,9 +14,9 @@ export default class GoogleAuthServiceImpl extends AuthService {
     super();
     const oauth2Client = new simpleOAuth2.AuthorizationCode({
       client: {
-        id: this.configService.get<string>(ConstantsEnvNames.GOOGLE_CLIENT_ID),
+        id: this.configService.get<string>(ConstEnvNames.GOOGLE_CLIENT_ID),
         secret: this.configService.get<string>(
-          ConstantsEnvNames.GOOGLE_CLIENT_SECRET,
+          ConstEnvNames.GOOGLE_CLIENT_SECRET,
         ),
       },
       auth: {
@@ -31,12 +31,12 @@ export default class GoogleAuthServiceImpl extends AuthService {
 
   generateOAuthLoginUrl(): string {
     const scopes = this.configService
-      .get<string>(ConstantsEnvNames.GOOGLE_SCOPES)
+      .get<string>(ConstEnvNames.GOOGLE_SCOPES)
       .split(',');
     const state = uuidv4();
     const authorizationUri = this.oauth2.authorizeURL({
       redirect_uri: this.configService.get<string>(
-        ConstantsEnvNames.GOOGLE_REDIRECT_URI,
+        ConstEnvNames.GOOGLE_REDIRECT_URI,
       ),
       scope: scopes,
       state: state,
@@ -50,7 +50,7 @@ export default class GoogleAuthServiceImpl extends AuthService {
       const tokenParams = {
         code,
         redirect_uri: this.configService.get<string>(
-          ConstantsEnvNames.GOOGLE_REDIRECT_URI,
+          ConstEnvNames.GOOGLE_REDIRECT_URI,
         ),
       };
 
