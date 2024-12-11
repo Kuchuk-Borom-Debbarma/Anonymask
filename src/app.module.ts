@@ -3,8 +3,6 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import User from './user/domain/User';
-import UserField from './user/domain/UserField';
-import UserFieldMap from './user/domain/UserFieldMap';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphqlModule } from './graphql/graphql.module';
@@ -33,7 +31,7 @@ import { ConstEnvNames } from './util/Constants';
           ssl: {
             rejectUnauthorized: true,
           },
-          entities: [User, UserField, UserFieldMap],
+          entities: [User],
         };
       },
     }),

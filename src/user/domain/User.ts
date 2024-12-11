@@ -6,4 +6,5 @@ export default class User {
   userId: string;
   @Column({ name: 'username', type: 'varchar' })
   username: string;
+
 }
