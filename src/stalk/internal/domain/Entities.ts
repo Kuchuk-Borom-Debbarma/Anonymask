@@ -1,14 +1,16 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({ schema: 'anonymask', name: 'stalk' })
+@Entity({ schema: 'public', name: 'stalk' })
 export class Stalk {
   @PrimaryColumn({ name: 'stalker', type: 'varchar' })
   stalker: string;
   @PrimaryColumn({ name: 'stalked', type: 'varchar' })
   stalked: string;
+  @Column({ name: 'at', type: 'date' })
+  at: Date;
 }
 
-@Entity({ schema: 'anonymask', name: 'stalk_counter' })
+@Entity({ schema: 'public', name: 'stalk_counter' })
 export class StalkCounter {
   @PrimaryColumn({ name: 'user_id', type: 'varchar' })
   userId: string;
