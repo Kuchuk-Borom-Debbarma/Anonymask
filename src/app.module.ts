@@ -9,6 +9,7 @@ import { GraphqlModule } from './graphql/graphql.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ConstEnvNames } from './util/Constants';
 import { PostModule } from './post/post.module';
+import { StalkModule } from './stalk/stalk.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { PostModule } from './post/post.module';
     UserModule,
     GraphqlModule,
     PostModule,
+    StalkModule,
   ],
   controllers: [],
   providers: [],
