@@ -1,17 +1,19 @@
 import { StalkService } from '../../api/Services';
 import { Logger } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { Stalk, StalkCounter } from '../domain/Entities';
+import { StalkCounterEntity, StalkEntity } from '../domain/Entities';
 import { InjectRepository } from '@nestjs/typeorm';
+import { StalkCounterDTO } from '../../api/DTOs';
 
-export default class StalkerServiceImpl implements StalkService {
+export default class StalkServiceImpl implements StalkService {
   constructor(
-    @InjectRepository(Stalk) private stalkRepo: Repository<Stalk>,
-    @InjectRepository(StalkCounter)
-    private stalkCountRepo: Repository<StalkCounter>,
+    @InjectRepository(StalkEntity)
+    private stalkRepo: Repository<StalkEntity>,
+    @InjectRepository(StalkCounterEntity)
+    private stalkCountRepo: Repository<StalkCounterEntity>,
   ) {}
 
-  private log = new Logger(StalkerServiceImpl.name);
+  private log = new Logger(StalkServiceImpl.name);
 
   async stalk(stalkerId: string, stalkedId: string): Promise<boolean | null> {
     try {
@@ -72,75 +74,94 @@ export default class StalkerServiceImpl implements StalkService {
     stalkerId: string,
     stalkedId: string,
   ): Promise<boolean | null> {
-    this.log.debug(`Checking if ${stalkerId} is stalking ${stalkedId}`);
-    const found = await this.stalkRepo.findOne({
-      where: {
-        stalker: stalkerId,
-        stalked: stalkedId,
-      },
-    });
-    return found !== null;
+    try {
+      this.log.debug(`Checking if ${stalkerId} is stalking ${stalkedId}`);
+      const found = await this.stalkRepo.findOne({
+        where: {
+          stalker: stalkerId,
+          stalked: stalkedId,
+        },
+      });
+      return found !== null;
+    } catch (err) {
+      this.log.error(`Error at isStalking ${err}`);
+      return null;
+    }
   }
 
   async getStalkers(
     userId: string,
     pagination?: { skip: number; limit: number },
   ): Promise<{ stalkers?: string[]; count: number } | null> {
-    if (pagination) {
-      this.log.debug(`Getting both stalkers list and count of ${userId}`);
-      const result = await this.stalkRepo.findAndCount({
-        skip: pagination.skip,
-        take: pagination.limit,
-        where: {
-          stalked: userId,
-        },
-      });
+    try {
+      if (pagination) {
+        this.log.debug(`Getting both stalkers list and count of ${userId}`);
+        const result = await this.stalkRepo.findAndCount({
+          skip: pagination.skip,
+          take: pagination.limit,
+          where: {
+            stalked: userId,
+          },
+        });
+        return {
+          stalkers: result[0].map((value) => value.stalker),
+          count: result[1],
+        };
+      }
+      this.log.debug(`Only getting stalker counts of ${userId}`);
+      const result = await this.stalkCountRepo.findOneBy({ userId: userId });
       return {
-        stalkers: result[0].map((value) => value.stalker),
-        count: result[1],
+        count: result.stalkerCount,
       };
+    } catch (err) {
+      this.log.error(`GetStalkers error ${err}`);
+      return null;
     }
-    this.log.debug(`Only getting stalker counts of ${userId}`);
-    const result = await this.stalkCountRepo.findOneBy({ userId: userId });
-    return {
-      count: result.stalkerCount,
-    };
   }
 
   async getStalking(
     userId: string,
     pagination?: { skip: number; limit: number },
   ): Promise<{ stalking?: string[]; count: number } | null> {
-    if (pagination) {
-      this.log.debug(`Getting stalking and its counts of user ${userId}`);
-      const result = await this.stalkRepo.findAndCount({
-        where: {
-          stalker: userId,
-        },
-        skip: pagination.skip,
-        take: pagination.limit,
-      });
+    try {
+      if (pagination) {
+        this.log.debug(`Getting stalking and its counts of user ${userId}`);
+        const result = await this.stalkRepo.findAndCount({
+          where: {
+            stalker: userId,
+          },
+          skip: pagination.skip,
+          take: pagination.limit,
+        });
+        return {
+          stalking: result[0].map((value) => value.stalked),
+          count: result[1],
+        };
+      }
+      this.log.debug(`Getting ONLY stalking count of user ${userId}`);
+      const result = await this.stalkCountRepo.findOneBy({ userId: userId });
       return {
-        stalking: result[0].map((value) => value.stalked),
-        count: result[1],
+        count: result.stalkingCount,
       };
+    } catch (err) {
+      this.log.error(`Error at getStalking ${err}`);
+      return null;
     }
-    this.log.debug(`Getting ONLY stalking count of user ${userId}`);
-    const result = await this.stalkCountRepo.findOneBy({ userId: userId });
-    return {
-      count: result.stalkingCount,
-    };
   }
 
-  async getStalkCounts(
-    userId: string,
-  ): Promise<{ stalking: number; stalker: number }> {
-    this.log.debug(`Getting stalk counts of user ${userId}`);
-    const result = await this.stalkCountRepo.findOneBy({ userId: userId });
-    return {
-      stalker: result.stalkerCount,
-      stalking: result.stalkingCount,
-    };
+  async getStalkCounts(userId: string): Promise<StalkCounterDTO | null> {
+    try {
+      this.log.debug(`Getting stalk counts of user ${userId}`);
+      const result = await this.stalkCountRepo.findOneBy({ userId: userId });
+      return {
+        userId: userId,
+        stalkerCount: result.stalkerCount,
+        stalkingCount: result.stalkingCount,
+      };
+    } catch (err) {
+      this.log.error(`Error at getStalkCounts ${err}`);
+      return null;
+    }
   }
 
   private async updateStalkCount(

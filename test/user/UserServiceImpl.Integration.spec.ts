@@ -30,7 +30,7 @@ describe('UserServiceImpl Integration', () => {
               ssl: {
                 rejectUnauthorized: false,
               },
-              entities: [User],
+              autoLoadEntities : true
             };
           },
         }),

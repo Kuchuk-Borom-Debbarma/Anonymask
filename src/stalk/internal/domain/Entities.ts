@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ schema: 'public', name: 'stalk' })
-export class Stalk {
+export class StalkEntity {
   @PrimaryColumn({ name: 'stalker', type: 'varchar' })
   stalker: string;
   @PrimaryColumn({ name: 'stalked', type: 'varchar' })
@@ -11,7 +11,7 @@ export class Stalk {
 }
 
 @Entity({ schema: 'public', name: 'stalk_counter' })
-export class StalkCounter {
+export class StalkCounterEntity {
   @PrimaryColumn({ name: 'user_id', type: 'varchar' })
   userId: string;
   @Column({ name: 'stalker_count', type: 'unsigned big int' })

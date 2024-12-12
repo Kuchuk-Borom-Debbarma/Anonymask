@@ -1,3 +1,5 @@
+import { StalkCounterDTO } from './DTOs';
+
 export abstract class StalkService {
   /**
    * Initiates stalking of a user.
@@ -80,8 +82,5 @@ export abstract class StalkService {
     count: number;
   } | null>;
 
-  abstract getStalkCounts(userId: string): Promise<{
-    stalking: number;
-    stalker: number;
-  }>;
+  abstract getStalkCounts(userId: string): Promise<StalkCounterDTO | null>;
 }
