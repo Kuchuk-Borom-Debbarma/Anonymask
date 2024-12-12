@@ -14,8 +14,8 @@ export class StalkEntity {
 export class StalkCounterEntity {
   @PrimaryColumn({ name: 'user_id', type: 'varchar' })
   userId: string;
-  @Column({ name: 'stalker_count', type: 'unsigned big int' })
+  @Column({ name: 'stalker_count', type: 'bigint' })
   stalkerCount: number;
-  @Column({ name: 'stalking_count', type: 'unsigned big int' })
+  @Column({ name: 'stalking_count', type: 'bigint' })
   stalkingCount: number;
 }

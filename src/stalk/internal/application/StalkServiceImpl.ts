@@ -1,10 +1,11 @@
 import { StalkService } from '../../api/Services';
-import { Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { StalkCounterEntity, StalkEntity } from '../domain/Entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StalkCounterDTO } from '../../api/DTOs';
 
+@Injectable()
 export default class StalkServiceImpl implements StalkService {
   constructor(
     @InjectRepository(StalkEntity)
@@ -17,6 +18,10 @@ export default class StalkServiceImpl implements StalkService {
 
   async stalk(stalkerId: string, stalkedId: string): Promise<boolean | null> {
     try {
+      if (stalkedId == stalkerId) {
+        this.log.error("Can't stalk yourself");
+        return false;
+      }
       this.log.debug(`User ${stalkerId} attempting to stalk ${stalkedId}`);
       //Check if already stalking
       const isStalking = await this.isStalking(stalkerId, stalkedId);
@@ -28,13 +33,14 @@ export default class StalkServiceImpl implements StalkService {
       await this.stalkRepo.save({
         stalker: stalkerId,
         stalked: stalkedId,
+        at: new Date(),
       });
       //TODO Convert this into an event
       await this.updateStalkCount(stalkerId, 'STALKING', 'INCREMENT');
-      await this.updateStalkCount(stalkerId, 'STALKER', 'INCREMENT');
+      await this.updateStalkCount(stalkedId, 'STALKER', 'INCREMENT');
       return true;
     } catch (err) {
-      this.log.error(`Error at stalk ${err}`);
+      this.log.error(`Error at stalk ${err} ${err.stacktrace}`);
       return null;
     }
   }
@@ -64,6 +70,7 @@ export default class StalkServiceImpl implements StalkService {
       //TODO publish event
       await this.updateStalkCount(stalkerId, 'STALKING', 'DECREMENT');
       await this.updateStalkCount(stalkedId, 'STALKER', 'DECREMENT');
+      return true;
     } catch (err) {
       this.log.error(`Error at stop talking ${err}`);
       return null;
@@ -149,6 +156,9 @@ export default class StalkServiceImpl implements StalkService {
     }
   }
 
+  //TODO get stalker count
+
+
   async getStalkCounts(userId: string): Promise<StalkCounterDTO | null> {
     try {
       this.log.debug(`Getting stalk counts of user ${userId}`);
@@ -169,45 +179,52 @@ export default class StalkServiceImpl implements StalkService {
     increment: 'STALKING' | 'STALKER',
     action: 'INCREMENT' | 'DECREMENT',
   ) {
-    this.log.debug(`Incrementing stalker count of user ${userId}`);
+    try {
+      this.log.debug(`Incrementing stalker count of user ${userId}`);
 
-    // Check if an existing record exists
-    const existingCount = await this.stalkCountRepo.findOneBy({
-      userId: userId,
-    });
-
-    if (!existingCount) {
-      this.log.warn(
-        `Existing stalk count entry not found for user ${userId}. Creating new entry`,
-      );
-      await this.stalkCountRepo.save({
-        stalkerCount: 0,
-        stalkingCount: 0,
+      // Check if an existing record exists
+      let existingCount = await this.stalkCountRepo.findOneBy({
         userId: userId,
       });
-    }
-    if (increment == 'STALKER') {
-      // Correctly update the record using a filter and updated data
-      await this.stalkCountRepo.update(
-        { userId: userId }, // Filter to find the record
-        {
-          stalkerCount:
-            action == 'INCREMENT'
-              ? existingCount.stalkerCount + 1
-              : existingCount.stalkerCount - 1,
-        }, // Data to update
-      );
-    } else if (increment == 'STALKING') {
-      // Correctly update the record using a filter and updated data
-      await this.stalkCountRepo.update(
-        { userId: userId }, // Filter to find the record
-        {
-          stalkingCount:
-            action == 'INCREMENT'
-              ? existingCount.stalkingCount + 1
-              : existingCount.stalkingCount - 1,
-        }, // Data to update
-      );
+
+      this.log.debug(`Result of existing count = ${existingCount}`);
+
+      if (!existingCount) {
+        this.log.warn(
+          `Existing stalk count entry not found for user ${userId}. Creating new entry`,
+        );
+        existingCount = await this.stalkCountRepo.save({
+          stalkerCount: 0,
+          stalkingCount: 0,
+          userId: userId,
+        });
+      }
+      if (increment == 'STALKER') {
+        // Correctly update the record using a filter and updated data
+        await this.stalkCountRepo.update(
+          { userId: userId }, // Filter to find the record
+          {
+            stalkerCount:
+              action == 'INCREMENT'
+                ? Number(existingCount.stalkerCount) + 1
+                : Number(existingCount.stalkerCount) - 1,
+          }, // Data to update
+        );
+      } else if (increment == 'STALKING') {
+        // Correctly update the record using a filter and updated data
+        await this.stalkCountRepo.update(
+          { userId: userId }, // Filter to find the record
+          {
+            stalkingCount:
+              action == 'INCREMENT'
+                ? Number(existingCount.stalkingCount) + 1
+                : Number(existingCount.stalkingCount) - 1,
+          }, // Data to update
+        );
+      }
+    } catch (err) {
+      this.log.error(`Error at updateStalkCount : ${err}`);
+      return;
     }
   }
 }
