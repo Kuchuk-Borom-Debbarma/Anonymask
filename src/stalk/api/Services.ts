@@ -79,4 +79,9 @@ export abstract class StalkService {
     stalking?: string[];
     count: number;
   } | null>;
+
+  abstract getStalkCounts(userId: string): Promise<{
+    stalking: number;
+    stalker: number;
+  }>;
 }
