@@ -30,7 +30,7 @@ export abstract class PostService {
       title?: string;
       content: string;
     },
-  ): Promise<void>;
+  ): Promise<PostDTO |null>;
 
   /**
    * Delete a post by its ID

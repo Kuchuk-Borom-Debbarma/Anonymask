@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({ schema: 'anonymask', name: 'posts' })
+@Entity({ schema: 'public', name: 'post' })
 export default class Post {
   @PrimaryColumn({ type: 'varchar', name: 'post_id' })
   postID: string;
@@ -10,6 +10,6 @@ export default class Post {
   createdAt: Date;
   @Column({ name: 'updated_at', type: 'timestamp', nullable: true })
   updatedAt: Date | null;
-  @Column({ name: 'content', type: 'text' })
+  @Column({ name: 'content', type: 'varchar' })
   content: string;
 }

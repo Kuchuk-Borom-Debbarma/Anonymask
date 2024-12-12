@@ -32,7 +32,7 @@ import { PostModule } from './post/post.module';
           ssl: {
             rejectUnauthorized: true,
           },
-          entities: [User],
+          autoLoadEntities: true,
         };
       },
     }),
