@@ -1,10 +1,10 @@
-import UserService from '../api/service/UserService';
-import UserDTO from '../api/dto/UserDTO';
+import UserService from '../../api/service/UserService';
+import UserDTO from '../../api/dto/UserDTO';
 import { InjectRepository } from '@nestjs/typeorm';
 import User from '../domain/User';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { UserAlreadyExistsException } from '../api/exceptions/exceptions';
+import { UserAlreadyExistsException } from '../../api/exceptions/exceptions';
 import * as console from 'node:console';
 
 @Injectable()

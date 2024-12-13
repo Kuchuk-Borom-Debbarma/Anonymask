@@ -5,9 +5,9 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { OAuthProvider } from '../../../user/auth/api/Provider';
+import { OAuthProvider } from '../../../../user/auth/api/Provider';
 import { IResponseModel, StringResponse } from '../Types/Root.types';
-import AuthService from '../../../user/auth/api/service/AuthService';
+import AuthService from '../../../../user/auth/api/service/AuthService';
 
 @ObjectType()
 export class PublicQueries {
