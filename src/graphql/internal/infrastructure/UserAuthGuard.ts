@@ -1,8 +1,8 @@
 import { ArgumentsHost, CanActivate, Injectable, Logger } from '@nestjs/common';
-import JwtService from '../../user/auth/api/service/JwtService';
+import JwtService from '../../../user/auth/api/service/JwtService';
 import { FastifyRequest } from 'fastify';
-import UserService from '../../user/api/service/UserService';
-import { UserAccessTokenDTO } from '../../user/auth/api/dto/UserAccessTokenDTO';
+import UserService from '../../../user/api/service/UserService';
+import { UserAccessTokenDTO } from '../../../user/auth/api/dto/UserAccessTokenDTO';
 
 /*
 Very important https://docs.nestjs.com/fundamentals/execution-context

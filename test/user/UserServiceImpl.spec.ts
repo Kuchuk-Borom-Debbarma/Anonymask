@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import User from '../../src/user/domain/User';
+import User from '../../src/user/internal/domain/User';
 import { Repository } from 'typeorm';
-import UserServiceImpl from '../../src/user/application/UserServiceImpl';
+import UserServiceImpl from '../../src/user/internal/application/UserServiceImpl';
 
 describe('userServiceImpl', () => {
   let userService: UserServiceImpl;

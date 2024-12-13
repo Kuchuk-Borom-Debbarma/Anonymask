@@ -1,5 +1,5 @@
-import PostDTO from '../api/dto/PostDTO';
-import { PostService } from '../api/services/PostService';
+import PostDTO from '../../api/dto/postDTO';
+import { PostService } from '../../api/services/PostService';
 
 export default class PostServiceImpl implements PostService {
   createPost(postData: { title: string; content: string }): Promise<PostDTO> {

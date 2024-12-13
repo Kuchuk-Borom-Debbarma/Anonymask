@@ -5,7 +5,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { OAuthProvider } from '../../../user/auth/api/Provider';
+import { OAuthProvider } from '../../../../user/auth/api/Provider';
 import { AuthOrchestrator } from '../../application/AuthOrchestratorService';
 import { IResponseModel, StringResponse } from '../Types/Root.types';
 

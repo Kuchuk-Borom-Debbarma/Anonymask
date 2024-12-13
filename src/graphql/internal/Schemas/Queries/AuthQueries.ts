@@ -5,7 +5,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import UserDTO from '../../../user/api/dto/UserDTO';
+import UserDTO from '../../../../user/api/dto/UserDTO';
 import { FastifyRequest } from 'fastify';
 import { IResponseModel, ResponseModel } from '../Types/Root.types';
 

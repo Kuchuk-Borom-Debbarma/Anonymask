@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import User from '../../src/user/domain/User';
-import UserServiceImpl from '../../src/user/application/UserServiceImpl';
+import User from '../../src/user/internal/domain/User';
+import UserServiceImpl from '../../src/user/internal/application/UserServiceImpl';
 import { UserAlreadyExistsException } from '../../src/user/api/exceptions/exceptions';
 
 describe('UserServiceImpl Integration', () => {
